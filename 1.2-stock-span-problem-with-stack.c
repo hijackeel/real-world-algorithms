@@ -7,27 +7,27 @@ int spans[7];
 int main ()
 {
   spans[0] = 1;
-  stack s = create(7);
-  push(&s, 0);
+  stack s = stack_create(7);
+  stack_push(&s, 0);
   for (int i=1; i<=7; i++)
   {
-    while (!empty(&s) && quotes[top(&s)] <= quotes[i])
+    while (!stack_empty(&s) && quotes[stack_top(&s)] <= quotes[i])
     {
-      pop(&s);
+      stack_pop(&s);
     }
-    if (empty(&s))
+    if (stack_empty(&s))
     {
       spans[i] = i+1;
     }
     else
     {
-      spans[i] = i - top(&s);
+      spans[i] = i - stack_top(&s);
     }
-    push(&s, i);
+    stack_push(&s, i);
   }
   for (int i=0; i<7; i++)
   {
     printf("%i\n", spans[i]);
   }
-  destroy(&s);
+  stack_destroy(&s);
 }
