@@ -44,7 +44,7 @@ void test_stack_full_push(stack *s, int top, int size)
 }
 
 void test_stack_complete(int *a, size_t max)
-// Pass in an array, and max number of elements.
+// Pass in an array of data to copy to stack, and max number of elements.
 {
   // Create and test empty stack.
   stack s = stack_create(max);
