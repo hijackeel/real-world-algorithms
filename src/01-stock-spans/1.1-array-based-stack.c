@@ -18,7 +18,7 @@ typedef struct
 
 stack stack_create (int max)
 {
-  return (stack){.max=max, .array=calloc(max, sizeof(int)), .top=-1};
+  return (stack){.max=max, .array=malloc(max * sizeof(int)), .top=-1};
 }
 
 
