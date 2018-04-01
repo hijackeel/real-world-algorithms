@@ -11,7 +11,7 @@ void test_stack_empty(stack *s)
   assert(!stack_full(s));
 }
 
-void test_stack_empty_pop(stack *s)
+void test_stack_underflow(stack *s)
 // Test that attempting to pop from empty stack has no side effects.
 {
   assert(stack_pop(s) == UNDERFLOW);
@@ -36,7 +36,7 @@ void test_stack_full(stack *s, int top, int size)
   assert(stack_full(s));
 }
 
-void test_stack_full_push(stack *s, int top, int size)
+void test_stack_overflow(stack *s, int top, int size)
 // Test that attempting to push onto full stack has no side effects.
 {
   assert(stack_push(s, 42) == OVERFLOW);
@@ -49,7 +49,7 @@ void test_stack_complete(int *a, size_t max)
   // Create and test empty stack.
   stack s = stack_create(max);
   test_stack_empty(&s);
-  test_stack_empty_pop(&s);
+  test_stack_underflow(&s);
 
   // Incrementally push data onto stack and test state, except for last value.
   for (size_t i = 0; i <= max-2; i++) {
@@ -60,7 +60,7 @@ void test_stack_complete(int *a, size_t max)
   // Push last value onto stack, test state, and pop off again.
   assert(!stack_push(&s, a[max-1]));
   test_stack_full(&s, a[max-1], max);
-  test_stack_full_push(&s, a[max-1], max);
+  test_stack_overflow(&s, a[max-1], max);
   assert(stack_pop(&s) == a[max-1]);
 
   // Incrementally test stack state and pop off data, until empty.
@@ -71,7 +71,7 @@ void test_stack_complete(int *a, size_t max)
 
   // Test and destroy empty stack.
   test_stack_empty(&s);
-  test_stack_empty_pop(&s);
+  test_stack_underflow(&s);
   stack_destroy(&s);
 }
 
@@ -89,9 +89,16 @@ void test_stack_five()
   test_stack_complete(a, max);
 }
 
-void test_stack_negative_twos()
+void test_stack_array_of_overflows()
 {
-  int a[] = {-2, -2, -2, -2, -2};
+  int a[] = {OVERFLOW, OVERFLOW, OVERFLOW, OVERFLOW, OVERFLOW};
+  size_t max = sizeof a / sizeof *a;
+  test_stack_complete(a, max);
+}
+
+void test_stack_array_of_underflows()
+{
+  int a[] = {UNDERFLOW, UNDERFLOW, UNDERFLOW, UNDERFLOW, UNDERFLOW};
   size_t max = sizeof a / sizeof *a;
   test_stack_complete(a, max);
 }
@@ -100,5 +107,6 @@ int main (int argc, char **argv)
 {
   test_stack_two();
   test_stack_five();
-  test_stack_negative_twos();
+  test_stack_array_of_overflows();
+  test_stack_array_of_underflows();
 }
