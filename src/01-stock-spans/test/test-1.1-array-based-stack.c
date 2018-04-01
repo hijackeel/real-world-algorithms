@@ -51,10 +51,14 @@ void test_stack_complete(int *a, size_t max)
   test_stack_empty(&s);
   test_stack_underflow(&s);
 
-  // Incrementally push data onto stack and test state, except for last value.
-  for (size_t i = 0; i <= max-2; i++) {
-    assert(!stack_push(&s, a[i]));
-    test_stack_half(&s, a[i], i+1);
+  if (max > 1)
+  {
+    // Incrementally push data onto stack and test state, except for last value.
+    for (size_t i = 0; i <= max-2; i++)
+    {
+      assert(!stack_push(&s, a[i]));
+      test_stack_half(&s, a[i], i+1);
+    }
   }
 
   // Push last value onto stack, test state, and pop off again.
@@ -63,16 +67,27 @@ void test_stack_complete(int *a, size_t max)
   test_stack_overflow(&s, a[max-1], max);
   assert(stack_pop(&s) == a[max-1]);
 
-  // Incrementally test stack state and pop off data, until empty.
-  for (size_t i = max-2; i < max; i--) {
-    test_stack_half(&s, a[i], i+1);
-    assert(stack_pop(&s) == a[i]);
+  if (max > 1)
+  {
+    // Incrementally test stack state and pop off data, until empty.
+    for (size_t i = max-2; i < max; i--)
+    {
+      test_stack_half(&s, a[i], i+1);
+      assert(stack_pop(&s) == a[i]);
+    }
   }
 
   // Test and destroy empty stack.
   test_stack_empty(&s);
   test_stack_underflow(&s);
   stack_destroy(&s);
+}
+
+void test_stack_one()
+{
+  int a[] = {20};
+  size_t max = sizeof a / sizeof *a;
+  test_stack_complete(a, max);
 }
 
 void test_stack_two()
@@ -105,6 +120,7 @@ void test_stack_array_of_underflows()
 
 int main (int argc, char **argv)
 {
+  test_stack_one();
   test_stack_two();
   test_stack_five();
   test_stack_array_of_overflows();
