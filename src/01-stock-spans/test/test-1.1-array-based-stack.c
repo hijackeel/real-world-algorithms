@@ -1,4 +1,5 @@
 #include "../1.1-array-based-stack.h"
+#include "../../run_test.h"
 #include <assert.h>
 #include <stddef.h>
 
@@ -120,9 +121,10 @@ void test_stack_array_of_underflows()
 
 int main (int argc, char **argv)
 {
-  test_stack_one();
-  test_stack_two();
-  test_stack_five();
-  test_stack_array_of_overflows();
-  test_stack_array_of_underflows();
+  run_test(test_stack_one);
+  run_test(test_stack_two);
+  run_test(test_stack_five);
+  run_test(test_stack_array_of_overflows);
+  run_test(test_stack_array_of_underflows);
+  printf("\nOK\n\n");
 }
