@@ -1,4 +1,4 @@
-#include "1.1-array-based-stack.h"
+#include "1.1-array-based-stack-lib.h"
 #include <stdio.h>
 
 int quotes[] = {7, 11, 8, 6, 3, 8, 9};

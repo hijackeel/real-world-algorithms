@@ -1,5 +1,5 @@
-#include "../1.1-array-based-stack.h"
-#include "../../run_test.h"
+#include "1.1-array-based-stack-lib.h"
+#include "run_test.h"
 #include <assert.h>
 #include <stddef.h>
 
