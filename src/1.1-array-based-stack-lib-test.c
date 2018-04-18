@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <stddef.h>
 
-void test_stack_empty(stack *s)
+static void test_stack_empty(stack *s)
 // Test state of empty stack.
 {
   assert(stack_top(s) == UNDERFLOW);
@@ -12,14 +12,14 @@ void test_stack_empty(stack *s)
   assert(!stack_full(s));
 }
 
-void test_stack_underflow(stack *s)
+static void test_stack_underflow(stack *s)
 // Test that attempting to pop from empty stack has no side effects.
 {
   assert(stack_pop(s) == UNDERFLOW);
   test_stack_empty(s);
 }
 
-void test_stack_half(stack *s, int top, int size)
+static void test_stack_half(stack *s, int top, int size)
 // Test state of half-full stack (not empty or full).
 {
   assert(stack_top(s) == top);
@@ -28,7 +28,7 @@ void test_stack_half(stack *s, int top, int size)
   assert(!stack_full(s));
 }
 
-void test_stack_full(stack *s, int top, int size)
+static void test_stack_full(stack *s, int top, int size)
 // Test state of full stack.
 {
   assert(stack_top(s) == top);
@@ -37,14 +37,14 @@ void test_stack_full(stack *s, int top, int size)
   assert(stack_full(s));
 }
 
-void test_stack_overflow(stack *s, int top, int size)
+static void test_stack_overflow(stack *s, int top, int size)
 // Test that attempting to push onto full stack has no side effects.
 {
   assert(stack_push(s, 42) == OVERFLOW);
   test_stack_full(s, top, size);
 }
 
-void test_stack_complete(int *a, size_t max)
+static void test_stack_complete(int *a, size_t max)
 // Pass in an array of data to copy to stack, and max number of elements.
 {
   // Create and test empty stack.
@@ -84,35 +84,35 @@ void test_stack_complete(int *a, size_t max)
   stack_destroy(&s);
 }
 
-void test_stack_one()
+static void test_stack_one()
 {
   int a[] = {20};
   size_t max = sizeof a / sizeof *a;
   test_stack_complete(a, max);
 }
 
-void test_stack_two()
+static void test_stack_two()
 {
   int a[] = {20, 37};
   size_t max = sizeof a / sizeof *a;
   test_stack_complete(a, max);
 }
 
-void test_stack_five()
+static void test_stack_five()
 {
   int a[] = {20, 37, 99, 11, 1066};
   size_t max = sizeof a / sizeof *a;
   test_stack_complete(a, max);
 }
 
-void test_stack_array_of_overflows()
+static void test_stack_array_of_overflows()
 {
   int a[] = {OVERFLOW, OVERFLOW, OVERFLOW, OVERFLOW, OVERFLOW};
   size_t max = sizeof a / sizeof *a;
   test_stack_complete(a, max);
 }
 
-void test_stack_array_of_underflows()
+static void test_stack_array_of_underflows()
 {
   int a[] = {UNDERFLOW, UNDERFLOW, UNDERFLOW, UNDERFLOW, UNDERFLOW};
   size_t max = sizeof a / sizeof *a;
