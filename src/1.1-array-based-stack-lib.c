@@ -1,19 +1,5 @@
+#include "1.1-array-based-stack-lib.h"
 #include <stdlib.h>
-
-
-typedef enum
-{
-  OVERFLOW = -1,
-  UNDERFLOW = -2
-} stack_error;
-
-
-typedef struct
-{
-  int max;
-  int *array;
-  int top;
-} stack;
 
 
 stack stack_create (int max)
