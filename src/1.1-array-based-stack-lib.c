@@ -2,9 +2,9 @@
 #include <stdlib.h>
 
 
-stack stack_create (int max)
+stack stack_create (size_t max)
 {
-  return (stack){.max=max, .array=malloc(max * sizeof(int)), .top=-1};
+  return (stack){.max=max, .array=malloc(max * sizeof(int)), .size=0};
 }
 
 
@@ -14,10 +14,10 @@ void stack_destroy (stack *s)
 }
 
 
-int stack_size (stack *s)
+size_t stack_size (stack *s)
 // Return number of elements in stack s.
 {
-  return s->top + 1;
+  return s->size;
 }
 
 
@@ -41,7 +41,7 @@ int stack_push (stack *s, int i)
 // Push item i onto stack s.
 // Return error if stack is full.
 {
-  return stack_full(s) ? OVERFLOW : 0 * (s->array[++(s->top)] = i);
+  return stack_full(s) ? OVERFLOW : 0 * (s->array[(s->size)++] = i);
 }
 
 
@@ -49,7 +49,7 @@ int stack_pop (stack *s)
 // Pop top item off stack s and return it.
 // Return error if stack is empty.
 {
-  return stack_empty(s) ? UNDERFLOW : s->array[(s->top)--];
+  return stack_empty(s) ? UNDERFLOW : s->array[--(s->size)];
 }
 
 
@@ -57,5 +57,5 @@ int stack_top (stack *s)
 // Return value of item on top of stack s without removing it.
 // Return error if stack is empty.
 {
-  return stack_empty(s) ? UNDERFLOW : s->array[s->top];
+  return stack_empty(s) ? UNDERFLOW : s->array[(s->size)-1];
 }

@@ -1,23 +1,23 @@
+#include <stddef.h>
+
 typedef enum
 {
   OVERFLOW = -1,
   UNDERFLOW = -2
 } stack_error;
 
-
 typedef struct
 {
-  int max;
+  size_t max;
   int *array;
-  int top;
+  size_t size;
 } stack;
 
-
-stack stack_create (int max);
+stack stack_create (size_t max);
 
 void stack_destroy (stack *s);
 
-int stack_size (stack *s);
+size_t stack_size (stack *s);
 // Return number of elements in stack s.
 
 int stack_empty (stack *s);

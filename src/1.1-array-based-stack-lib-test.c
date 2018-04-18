@@ -1,7 +1,6 @@
 #include "1.1-array-based-stack-lib.h"
 #include "run_test.h"
 #include <assert.h>
-#include <stddef.h>
 
 static void test_stack_empty(stack *s)
 // Test state of empty stack.
@@ -19,7 +18,7 @@ static void test_stack_underflow(stack *s)
   test_stack_empty(s);
 }
 
-static void test_stack_half(stack *s, int top, int size)
+static void test_stack_half(stack *s, int top, size_t size)
 // Test state of half-full stack (not empty or full).
 {
   assert(stack_top(s) == top);
@@ -28,7 +27,7 @@ static void test_stack_half(stack *s, int top, int size)
   assert(!stack_full(s));
 }
 
-static void test_stack_full(stack *s, int top, int size)
+static void test_stack_full(stack *s, int top, size_t size)
 // Test state of full stack.
 {
   assert(stack_top(s) == top);
@@ -37,7 +36,7 @@ static void test_stack_full(stack *s, int top, int size)
   assert(stack_full(s));
 }
 
-static void test_stack_overflow(stack *s, int top, int size)
+static void test_stack_overflow(stack *s, int top, size_t size)
 // Test that attempting to push onto full stack has no side effects.
 {
   assert(stack_push(s, 42) == OVERFLOW);
