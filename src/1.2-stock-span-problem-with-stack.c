@@ -1,8 +1,8 @@
 #include "1.1-array-based-stack-lib.h"
 #include <stdio.h>
 
-int quotes[] = {7, 11, 8, 6, 3, 8, 9};
-int spans[7];
+static int quotes[] = {7, 11, 8, 6, 3, 8, 9};
+static int spans[7];
 
 int main ()
 {
