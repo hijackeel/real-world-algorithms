@@ -1,5 +1,5 @@
 CC = clang
-CFLAGS = -std=c11 -MMD -MP -g -O3 -Wall
+CFLAGS = -std=c11 -MMD -MP -g -O3 -Weverything
 srcs = $(wildcard *.c)
 execs = $(basename $(filter-out %lib.c, $(srcs)))
 
