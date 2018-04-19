@@ -10,7 +10,7 @@ stack stack_create (size_t max)
 
 void stack_destroy (stack *s)
 {
-  free(s->array);
+  free(s->array); s->array = 0; s->max = s->size = 0;
 }
 
 

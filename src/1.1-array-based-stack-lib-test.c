@@ -43,6 +43,24 @@ static void test_stack_overflow(stack *s, int top, size_t size)
   test_stack_full(s, top, size);
 }
 
+static void test_stack_destroyed(stack *s)
+// Test state of destroyed stack.
+{
+  assert(stack_top(s) == UNDERFLOW);
+  assert(!stack_size(s));
+  assert(stack_empty(s));
+  assert(stack_full(s));
+}
+
+static void test_stack_destroyed_overflow_underflow(stack *s)
+// Test that attempting to push/pop to/from destroyed stack has no side effects.
+{
+  assert(stack_push(s, 42) == OVERFLOW);
+  test_stack_destroyed(s);
+  assert(stack_pop(s) == UNDERFLOW);
+  test_stack_destroyed(s);
+}
+
 static void test_stack_complete(int *a, size_t max)
 // Pass in an array of data to copy to stack, and max number of elements.
 {
@@ -81,6 +99,9 @@ static void test_stack_complete(int *a, size_t max)
   test_stack_empty(&s);
   test_stack_underflow(&s);
   stack_destroy(&s);
+
+  // Test destroyed stack.
+  test_stack_destroyed_overflow_underflow(&s);
 }
 
 static void test_stack_one()
@@ -118,6 +139,15 @@ static void test_stack_array_of_underflows()
   test_stack_complete(a, max);
 }
 
+static void test_stack_half_destroyed()
+// Test destruction of non-empty stack.
+{
+  stack s = stack_create(2);
+  stack_push(&s, 42);
+  stack_destroy(&s);
+  test_stack_destroyed_overflow_underflow(&s);
+}
+
 int main()
 {
   run_test(test_stack_one);
@@ -125,5 +155,6 @@ int main()
   run_test(test_stack_five);
   run_test(test_stack_array_of_overflows);
   run_test(test_stack_array_of_underflows);
+  run_test(test_stack_half_destroyed);
   printf("\nOK\n\n");
 }
