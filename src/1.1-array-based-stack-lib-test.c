@@ -118,7 +118,7 @@ static void test_stack_array_of_underflows()
   test_stack_complete(a, max);
 }
 
-int main (int argc, char **argv)
+int main()
 {
   run_test(test_stack_one);
   run_test(test_stack_two);
