@@ -1,15 +1,13 @@
+#include "1.2-stock-span-problem-with-stack-lib.h"
 #include "1.1-array-based-stack-lib.h"
-#include <stdio.h>
 
-static int quotes[] = {7, 11, 8, 6, 3, 8, 9};
-static int spans[7];
-
-int main ()
+void stock_span (int *quotes, size_t *spans, size_t length)
 {
   spans[0] = 1;
-  stack s = stack_create(7);
+  stack s = stack_create(length);
   stack_push(&s, 0);
-  for (int i=1; i<=7; i++)
+
+  for (size_t i=1; i<length; i++)
   {
     while (!stack_empty(&s) && quotes[stack_top(&s)] <= quotes[i])
     {
@@ -25,9 +23,6 @@ int main ()
     }
     stack_push(&s, i);
   }
-  for (int i=0; i<7; i++)
-  {
-    printf("%i\n", spans[i]);
-  }
+
   stack_destroy(&s);
 }
