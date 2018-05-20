@@ -8,8 +8,8 @@ typedef enum
 
 typedef struct
 {
-  int *bottom;
-  int *top;
+  int *base;
+  size_t size;
   size_t max;
 } stack;
 

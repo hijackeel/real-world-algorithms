@@ -4,21 +4,20 @@
 
 stack stack_create (size_t max)
 {
-  int * array = malloc(max * sizeof(int));
-  return (stack){.bottom=array, .top=array, .max=max};
+  return (stack){.base=malloc(max * sizeof(int)), .size=0, .max=max};
 }
 
 
 void stack_destroy (stack *s)
 {
-  free(s->bottom); s->bottom=s->top=0; s->max=0;
+  free(s->base); s->base = 0; s->size = s->max = 0;
 }
 
 
 size_t stack_size (stack *s)
 // Return number of elements in stack s.
 {
-  return (size_t)(s->top - s->bottom);
+  return s->size;
 }
 
 
@@ -42,7 +41,7 @@ int stack_push (stack *s, int i)
 // Push item i onto stack s.
 // Return OVERFLOW (non-zero) if stack is full.
 {
-  return stack_full(s) ? OVERFLOW : 0 * (*(++(s->top)) = i);
+  return stack_full(s) ? OVERFLOW : 0 * (s->base[(s->size)++] = i);
 }
 
 
@@ -50,7 +49,7 @@ int * stack_pop (stack *s)
 // Pop top item off stack s and return pointer to it.
 // Return UNDERFLOW (null pointer) if stack is empty.
 {
-  return stack_empty(s) ? UNDERFLOW : (s->top)--;
+  return stack_empty(s) ? UNDERFLOW : s->base + --(s->size);
 }
 
 
@@ -58,5 +57,5 @@ int * stack_top (stack *s)
 // Return pointer to item on top of stack s without removing it.
 // Return UNDERFLOW (null pointer) if stack is empty.
 {
-  return stack_empty(s) ? UNDERFLOW : s->top;
+  return stack_empty(s) ? UNDERFLOW : s->base + s->size - 1;
 }
