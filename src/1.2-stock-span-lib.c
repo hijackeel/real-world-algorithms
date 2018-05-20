@@ -9,7 +9,7 @@ void stock_span (int *quotes, size_t *spans, size_t length)
 
   for (size_t i=1; i<length; i++)
   {
-    while (!stack_empty(&s) && quotes[stack_top(&s)] <= quotes[i])
+    while (!stack_empty(&s) && quotes[*stack_top(&s)] <= quotes[i])
     {
       stack_pop(&s);
     }
@@ -19,7 +19,7 @@ void stock_span (int *quotes, size_t *spans, size_t length)
     }
     else
     {
-      spans[i] = i - stack_top(&s);
+      spans[i] = i - *stack_top(&s);
     }
     stack_push(&s, i);
   }

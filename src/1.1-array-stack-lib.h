@@ -2,8 +2,8 @@
 
 typedef enum
 {
-  OVERFLOW = -1,
-  UNDERFLOW = -2
+  OVERFLOW = 1,
+  UNDERFLOW = 0
 } stack_error;
 
 typedef struct
@@ -30,12 +30,12 @@ int stack_full (stack *s);
 
 int stack_push (stack *s, int i);
 // Push item i onto stack s.
-// Return error if stack is full.
+// Return OVERFLOW (non-zero) if stack is full.
 
-int stack_pop (stack *s);
-// Pop top item off stack s and return it.
-// Return error if stack is empty.
+int * stack_pop (stack *s);
+// Pop top item off stack s and return pointer to it.
+// Return UNDERFLOW (null pointer) if stack is empty.
 
-int stack_top (stack *s);
-// Return value of item on top of stack s without removing it.
-// Return error if stack is empty.
+int * stack_top (stack *s);
+// Return pointer to item on top of stack s without removing it.
+// Return UNDERFLOW (null pointer) if stack is empty.

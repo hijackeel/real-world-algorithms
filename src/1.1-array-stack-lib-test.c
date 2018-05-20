@@ -21,7 +21,8 @@ static void test_stack_underflow(stack *s)
 static void test_stack_half(stack *s, int top, size_t size)
 // Test state of half-full stack (not empty or full).
 {
-  assert(stack_top(s) == top);
+  assert(stack_top(s) != UNDERFLOW);
+  assert(*stack_top(s) == top);
   assert(stack_size(s) == size);
   assert(!stack_empty(s));
   assert(!stack_full(s));
@@ -30,7 +31,8 @@ static void test_stack_half(stack *s, int top, size_t size)
 static void test_stack_full(stack *s, int top, size_t size)
 // Test state of full stack.
 {
-  assert(stack_top(s) == top);
+  assert(stack_top(s) != UNDERFLOW);
+  assert(*stack_top(s) == top);
   assert(stack_size(s) == size);
   assert(!stack_empty(s));
   assert(stack_full(s));
@@ -83,7 +85,7 @@ static void test_stack_complete(int *a, size_t max)
   assert(!stack_push(&s, a[max-1]));
   test_stack_full(&s, a[max-1], max);
   test_stack_overflow(&s, a[max-1], max);
-  assert(stack_pop(&s) == a[max-1]);
+  assert(*stack_pop(&s) == a[max-1]);
 
   if (max > 1)
   {
@@ -91,7 +93,7 @@ static void test_stack_complete(int *a, size_t max)
     for (size_t i = max-2; i < max; i--)
     {
       test_stack_half(&s, a[i], i+1);
-      assert(stack_pop(&s) == a[i]);
+      assert(*stack_pop(&s) == a[i]);
     }
   }
 
