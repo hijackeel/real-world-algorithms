@@ -1,4 +1,4 @@
-#include "1.2-stock-span-problem-with-stack-lib.h"
+#include "1.2-stock-span-lib.h"
 #include "run_test.h"
 #include <assert.h>
 

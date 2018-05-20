@@ -1,5 +1,5 @@
-#include "1.2-stock-span-problem-with-stack-lib.h"
-#include "1.1-array-based-stack-lib.h"
+#include "1.2-stock-span-lib.h"
+#include "1.1-array-stack-lib.h"
 
 void stock_span (int *quotes, size_t *spans, size_t length)
 {
