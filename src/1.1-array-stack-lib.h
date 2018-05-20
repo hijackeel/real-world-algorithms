@@ -8,9 +8,9 @@ typedef enum
 
 typedef struct
 {
+  int *bottom;
+  int *top;
   size_t max;
-  int *array;
-  size_t size;
 } stack;
 
 stack stack_create (size_t max);
