@@ -1,7 +1,8 @@
 #include "1.2-stock-span-lib.h"
 #include "1.1-array-stack-size_t-lib.h"
+#include <stdbool.h>
 
-void stock_span (int *quotes, size_t *spans, size_t length)
+void stock_span_stack (int *quotes, size_t *spans, size_t length)
 {
   spans[0] = 1;
   stack_size_t s = stack_size_t_create(length);
@@ -26,4 +27,18 @@ void stock_span (int *quotes, size_t *spans, size_t length)
   }
 
   stack_size_t_destroy(&s);
+}
+
+void stock_span_simple (int *quotes, size_t *spans, size_t length)
+{
+  for (size_t i=0; i<length; i++)
+  {
+    size_t k = 1;
+    bool span_end = false;
+    while (i-k < length && !span_end)
+    {
+      quotes[i-k] <= quotes[i] ? k++ : (span_end = true);
+    }
+    spans[i] = k;
+  }
 }
