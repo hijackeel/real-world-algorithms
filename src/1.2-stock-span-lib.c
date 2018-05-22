@@ -2,7 +2,28 @@
 #include "1.1-array-stack-size_t-lib.h"
 #include <stdbool.h>
 
+/* Given an array of chronologically-sorted daily closing price quotes for a
+stock, find the "span" of the stock's price for each day: the number of
+consecutive days going backward on which the price was less than or equal to the
+day the span is being calculated for.
+
+12 --2          
+11   #---------5
+10   #-------4 |
+ 9   #-1     | #
+ 8 1 # #     # #
+ 7 # # #-1   # #
+ 6 # # # #   # #
+ 5 # # # #   # #
+ 4 # # # #-1 # #
+ 3 # # # # # # #
+ 2 # # # # # # #
+ 1 # # # # # # #
+   0 1 2 3 4 5 6
+*/
+
 void stock_span_stack (int *quotes, size_t *spans, size_t length)
+// O(n)
 {
   spans[0] = 1;
   stack_size_t s = stack_size_t_create(length);
@@ -30,6 +51,7 @@ void stock_span_stack (int *quotes, size_t *spans, size_t length)
 }
 
 void stock_span_simple (int *quotes, size_t *spans, size_t length)
+// O(n^2)
 {
   for (size_t i=0; i<length; i++)
   {
