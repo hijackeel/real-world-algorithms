@@ -16,11 +16,13 @@ all: $(execs)
 lib%.so: %.o
 	$(CC) $(CFLAGS) $^ -o $@ -shared
 
-1.1-array-stack-lib-test: lib1.1-array-stack-lib.so 1.1-array-stack-lib-test.o
+1.1-array-stack-%-lib-test:\
+lib1.1-array-stack-%-lib.so\
+1.1-array-stack-%-lib-test.o
 	$(compile_and_link_so)
 	./$@
 
-lib1.2-stock-span-lib.so: lib1.1-array-stack-lib.so 1.2-stock-span-lib.o
+lib1.2-stock-span-lib.so: lib1.1-array-stack-size_t-lib.so 1.2-stock-span-lib.o
 	$(CC) $(CFLAGS) 1.2-stock-span-lib.o -o $@ -shared\
     -l$(patsubst lib%.so, %, $<) -L. -Wl,-rpath,'$$ORIGIN'
 
