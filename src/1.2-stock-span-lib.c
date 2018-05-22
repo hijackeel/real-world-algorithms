@@ -4,25 +4,25 @@
 void stock_span (int *quotes, size_t *spans, size_t length)
 {
   spans[0] = 1;
-  stack s = stack_create(length);
-  stack_push(&s, 0);
+  stack_size_t s = STACK_CREATE(length, size_t);
+  STACK_PUSH(s, 0);
 
   for (size_t i=1; i<length; i++)
   {
-    while (!stack_empty(&s) && quotes[*stack_top(&s)] <= quotes[i])
+    while (!STACK_EMPTY(s) && quotes[*STACK_TOP(s)] <= quotes[i])
     {
-      stack_pop(&s);
+      STACK_POP(s);
     }
-    if (stack_empty(&s))
+    if (STACK_EMPTY(s))
     {
       spans[i] = i+1;
     }
     else
     {
-      spans[i] = i - *stack_top(&s);
+      spans[i] = i - *STACK_TOP(s);
     }
-    stack_push(&s, i);
+    STACK_PUSH(s, i);
   }
 
-  stack_destroy(&s);
+  STACK_DESTROY(s);
 }
