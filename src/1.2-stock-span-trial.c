@@ -22,8 +22,8 @@ the userdata argument, which can be set with the CURLOPT_WRITEDATA option. */
   mem->base = realloc(mem->base, mem->size + num_bytes_received + 1);
   if (!mem->base)
   {
-    printf("Out of memory!\n");
-    return 0;
+    fprintf(stderr, "Out of memory!\n");
+    exit(EXIT_FAILURE);
   }
   // Copy the data to mem, update struct, and add null terminator.
   memcpy(&(mem->base[mem->size]), buffer, num_bytes_received);
