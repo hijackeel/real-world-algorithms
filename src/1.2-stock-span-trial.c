@@ -84,22 +84,27 @@ int main(int argc, char **argv)
   // Get the data.
   printf("Downloading quotes...\n");
   CURLcode res = curl_easy_perform(handle);
+
   if (res != CURLE_OK)
   {
     fprintf(stderr, "Downloading quotes failed: %s\n", curl_easy_strerror(res));
     exit(EXIT_FAILURE);
   }
 
+  if (mem.base[0] == '{')
+  // The website returns API errors in JSON format.
+  {
+    fprintf(stderr, "%s\n", mem.base);
+    exit(EXIT_FAILURE);
+  }
+
   // Process the data.
   printf("%zu bytes received.\n", mem.size);
-//printf("%s", mem.base);
-
-/*
-TO DO:
-Check mem.base for error code from API.
-If not API error, extract closing prices from csv.
-Pass array of closing prices to stock_span_stack and stock_span_simple.
-*/
+  /*
+  TO DO:
+  Extract closing prices from csv.
+  Pass array of closing prices to stock_span_stack and stock_span_simple.
+  */
 
   // Teardown.
   free(mem.base);
