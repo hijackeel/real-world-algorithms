@@ -2,11 +2,11 @@
 #include "run_test.h"
 #include <assert.h>
 
-typedef void (*stock_span_function)(int*, size_t*, size_t);
+typedef void (*stock_span_function)(double*, size_t*, size_t);
 
 static void test_stock_span_function(stock_span_function f)
 {
-  static int quotes[] = {7, 11, 8, 6, 3, 8, 9};
+  static double quotes[] = {7.0, 11.0, 8.0, 6.0, 3.0, 8.0, 9.0};
   static size_t length = sizeof quotes / sizeof *quotes;
   size_t spans[7];
   f(quotes, spans, length);

@@ -22,7 +22,7 @@ day the span is being calculated for.
    0 1 2 3 4 5 6
 */
 
-void stock_span_stack (int *quotes, size_t *spans, size_t length)
+void stock_span_stack (double *quotes, size_t *spans, size_t length)
 // O(n)
 {
   spans[0] = 1;
@@ -50,7 +50,7 @@ void stock_span_stack (int *quotes, size_t *spans, size_t length)
   stack_size_t_destroy(&s);
 }
 
-void stock_span_simple (int *quotes, size_t *spans, size_t length)
+void stock_span_simple (double *quotes, size_t *spans, size_t length)
 // O(n^2)
 {
   for (size_t i=0; i<length; i++)
