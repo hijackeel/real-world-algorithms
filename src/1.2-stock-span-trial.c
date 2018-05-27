@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "1.2-stock-span-lib.h"
+extern char * strtok_r(char *string, const char *delimiter, char **bookmark);
+// strtok_r is POSIX.
 
 typedef struct
 {
@@ -61,12 +63,12 @@ int main(int argc, char **argv)
     exit(EXIT_FAILURE);
   }
 
-  // Setup.
+  // libcurl setup.
   curl_global_init(CURL_GLOBAL_ALL);
   CURL *handle = curl_easy_init();
 
   char url[127];
-  snprintf(url, sizeof(url),
+  snprintf(url, sizeof url,
     "https://www.alphavantage.co/query"
     "?function=TIME_SERIES_DAILY"
     "&symbol=%s"
@@ -91,23 +93,76 @@ int main(int argc, char **argv)
     exit(EXIT_FAILURE);
   }
 
-  if (mem.base[0] == '{')
+  if (mem.base[0] == '{' || mem.base[0] == '<')
   // The website returns API errors in JSON format.
+  // Heroku returns an HTML page for application errors at their end.
   {
     fprintf(stderr, "%s\n", mem.base);
     exit(EXIT_FAILURE);
   }
 
-  // Process the data.
   printf("%zu bytes received.\n", mem.size);
-  /*
-  TO DO:
-  Extract closing prices from csv.
-  Pass array of closing prices to stock_span_stack and stock_span_simple.
-  */
 
-  // Teardown.
-  free(mem.base);
+  // libcurl teardown.
   curl_easy_cleanup(handle);
   curl_global_cleanup();
+
+  // Copy closing quotes from csv to array.
+  enum csv_header
+  {
+    TIMESTAMP, OPEN, HIGH, LOW, CLOSE, VOLUME
+  };
+
+  char *bookmark_line;
+  char *line = strtok_r(mem.base, "\n", &bookmark_line);
+  line = strtok_r(NULL, "\n", &bookmark_line); // Skip header.
+  double *closing_quotes = NULL;
+  size_t cq_size = 0;
+  while (line)
+  {
+    char *bookmark_cell;
+    char *cell = strtok_r(line, ",", &bookmark_cell);
+    size_t column = TIMESTAMP;
+    while (cell)
+    {
+      if (column == CLOSE)
+      {
+        cq_size++;
+        closing_quotes = realloc(closing_quotes, cq_size * sizeof(double));
+        closing_quotes[cq_size-1] = atof(cell);
+      }
+      column++;
+      cell = strtok_r(NULL, ",", &bookmark_cell);
+    }
+    line = strtok_r(NULL, "\n", &bookmark_line);
+  }
+  free(mem.base);
+
+  // Reverse the array, to put it in chronological order.
+  double *base = closing_quotes;
+  double *top = closing_quotes + cq_size - 1;
+  double tmp;
+  for (; base < top; base++ && top--)
+  {
+    tmp = *base;
+    *base = *top;
+    *top = tmp;
+  }
+
+  // Run the two algorithms on the data. Profile this!
+  size_t *spans = malloc(cq_size * sizeof(size_t));
+  printf("Running stock_span_stack... ");
+  stock_span_stack(closing_quotes, spans, cq_size);
+  printf("DONE.\n");
+  printf("Running stock_span_simple... ");
+  stock_span_simple(closing_quotes, spans, cq_size);
+  printf("DONE.\n");
+
+  for (size_t i=0; i<cq_size; i++)
+  {
+    printf("Quote: %.4f, Span: %zu\n", closing_quotes[i], spans[i]);
+  }
+
+  free(spans);
+  free(closing_quotes);
 }
