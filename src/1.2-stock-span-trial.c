@@ -6,6 +6,15 @@
 extern char * strtok_r(char *string, const char *delimiter, char **bookmark);
 // strtok_r is POSIX.
 
+static void mem_check(void *ptr)
+{
+  if (!ptr)
+  {
+    fprintf(stderr, "Out of memory!\n");
+    exit(EXIT_FAILURE);
+  }
+}
+
 typedef struct
 {
   char *base;
@@ -23,11 +32,8 @@ the userdata argument, which can be set with the CURLOPT_WRITEDATA option. */
 
   // Re-size mem to fit more data, plus extra byte for null terminator.
   mem->base = realloc(mem->base, mem->size + num_bytes_received + 1);
-  if (!mem->base)
-  {
-    fprintf(stderr, "Out of memory!\n");
-    exit(EXIT_FAILURE);
-  }
+  mem_check((void *)mem->base);
+
   // Copy the data to mem, update struct, and add null terminator.
   memcpy(&(mem->base[mem->size]), buffer, num_bytes_received);
   mem->size += num_bytes_received;
@@ -82,6 +88,7 @@ int main(int argc, char **argv)
 
   curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_mem);
   memory mem = {.base=malloc(1), .size=0};
+  mem_check((void *)mem.base);
   curl_easy_setopt(handle, CURLOPT_WRITEDATA, (void *)&mem);
 
   // Get the data.
@@ -130,6 +137,7 @@ int main(int argc, char **argv)
       {
         cq_size++;
         closing_quotes = realloc(closing_quotes, cq_size * sizeof(double));
+        mem_check((void *)closing_quotes);
         closing_quotes[cq_size-1] = atof(cell);
       }
       column++;
@@ -155,6 +163,7 @@ int main(int argc, char **argv)
   for (int i=0; i<8; i++)
   {
     closing_quotes = realloc(closing_quotes, cq_size * sizeof(double) * 2);
+    mem_check((void *)closing_quotes);
     memcpy(
       (void *)(closing_quotes + cq_size),
       (void *)closing_quotes,
@@ -165,6 +174,7 @@ int main(int argc, char **argv)
 
   // Run the two algorithms on the data. Profile this!
   size_t *spans = malloc(cq_size * sizeof(size_t));
+  mem_check((void *)spans);
 
   printf("Running stock_span_stack... ");
   CALLGRIND_START_INSTRUMENTATION;
