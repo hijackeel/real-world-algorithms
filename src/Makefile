@@ -34,6 +34,6 @@ lib1.2-stock-span-lib.so: lib1.1-array-stack-size_t-lib.so 1.2-stock-span-lib.o
 	$(compile_and_link_so) `curl-config --libs`
 
 clean:
-	rm -f *.o *.d *.so $(execs)
+	rm -f *.o *.d *.so callgrind.* $(execs)
 
 -include $(srcs:%.c=%.d)

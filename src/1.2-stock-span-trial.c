@@ -1,3 +1,4 @@
+#include <valgrind/callgrind.h>
 #include <curl/curl.h>
 #include <stdlib.h>
 #include <string.h>
@@ -149,19 +150,42 @@ int main(int argc, char **argv)
     *top = tmp;
   }
 
+  // Data set is too small to demonstrate O(n) vs O(n^2).
+  // Double it several times.
+  for (int i=0; i<8; i++)
+  {
+    closing_quotes = realloc(closing_quotes, cq_size * sizeof(double) * 2);
+    memcpy(
+      (void *)(closing_quotes + cq_size),
+      (void *)closing_quotes,
+      cq_size * sizeof(double)
+    );
+    cq_size *= 2;
+  }
+
   // Run the two algorithms on the data. Profile this!
   size_t *spans = malloc(cq_size * sizeof(size_t));
+
   printf("Running stock_span_stack... ");
+  CALLGRIND_START_INSTRUMENTATION;
   stock_span_stack(closing_quotes, spans, cq_size);
-  printf("DONE.\n");
-  printf("Running stock_span_simple... ");
-  stock_span_simple(closing_quotes, spans, cq_size);
+  CALLGRIND_STOP_INSTRUMENTATION;
+  CALLGRIND_DUMP_STATS;
   printf("DONE.\n");
 
+  printf("Running stock_span_simple... ");
+  CALLGRIND_START_INSTRUMENTATION;
+  stock_span_simple(closing_quotes, spans, cq_size);
+  CALLGRIND_STOP_INSTRUMENTATION;
+  CALLGRIND_DUMP_STATS;
+  printf("DONE.\n");
+
+/*
   for (size_t i=0; i<cq_size; i++)
   {
     printf("Quote: %.4f, Span: %zu\n", closing_quotes[i], spans[i]);
   }
+*/
 
   free(spans);
   free(closing_quotes);
