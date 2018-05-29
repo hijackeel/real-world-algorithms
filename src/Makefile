@@ -53,6 +53,9 @@ lib1.4-delim-match-lib.so: lib1.1-array-stack-char-lib.so 1.4-delim-match-lib.o
 	$(compile_and_link_so)
 	./$@
 
+1.4-delim-match: lib1.4-delim-match-lib.so 1.4-delim-match.o
+	$(compile_and_link_so)
+
 clean:
 	rm -f *.o *.d *.so callgrind.* $(execs)
 
