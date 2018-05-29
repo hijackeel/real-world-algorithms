@@ -14,6 +14,9 @@ int main()
     printf("> ");
     fgets(buffer, BUFFER_SIZE, stdin);
 
+    // Convert newline at end of user input to null terminator.
+    strtok(buffer, "\n");
+
     // Calculate number of operands.
     strcpy(buffer_copy, buffer);
     size_t num_operands = 0;
@@ -24,9 +27,6 @@ int main()
         num_operands++;
       }
     }
-
-    // Convert newline at end of user input to null terminator.
-    strtok(buffer, "\n");
 
     // Display output.
     printf("%f\n\n", rpn_calc(buffer, num_operands));
