@@ -2,6 +2,17 @@
 #include "1.1-array-stack-char-lib.h"
 #include <string.h>
 
+char * delim_match_str(int result)
+{
+  switch (result)
+  {
+    case MATCHED_CORRECT: return "Correct match!";
+    case MATCHED_INCORRECT: return "Incorrect match!";
+    case UNMATCHED: return "Unmatched!";
+    default: return "Undefined!";
+  }
+}
+
 int delim_match(char *input, size_t max)
 {
   stack_char s = stack_char_create(max);

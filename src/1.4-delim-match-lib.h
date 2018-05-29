@@ -8,3 +8,4 @@ typedef enum
 } delim_match_return;
 
 int delim_match(char *input, size_t max);
+char * delim_match_str(int result);

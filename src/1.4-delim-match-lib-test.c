@@ -29,10 +29,16 @@ static void test_delim_match_unmatched()
   test_delim_match(input, output);
 }
 
+static void test_delim_match_str_undefined()
+{
+  assert(!strcmp(delim_match_str(42), "Undefined!"));
+}
+
 int main()
 {
   run_test(test_delim_match_correct);
   run_test(test_delim_match_incorrect);
   run_test(test_delim_match_unmatched);
+  run_test(test_delim_match_str_undefined);
   printf("\nOK\n\n");
 }

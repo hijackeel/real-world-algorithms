@@ -17,6 +17,6 @@ int main()
     strtok(buffer, "\n");
 
     // Display output.
-    printf("%d\n\n", delim_match(buffer, strlen(buffer)));
+    printf("%s\n\n", delim_match_str(delim_match(buffer, strlen(buffer))));
   }
 }
