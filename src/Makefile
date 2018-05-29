@@ -45,6 +45,14 @@ lib1.3-rpn-lib.so: lib1.1-array-stack-double-lib.so 1.3-rpn-lib.o
 1.3-rpn: lib1.3-rpn-lib.so 1.3-rpn.o
 	$(compile_and_link_so)
 
+lib1.4-delim-match-lib.so: lib1.1-array-stack-char-lib.so 1.4-delim-match-lib.o
+	$(CC) $(CFLAGS) 1.4-delim-match-lib.o -o $@ -shared\
+    -l$(patsubst lib%.so, %, $<) -L. -Wl,-rpath,'$$ORIGIN'
+
+1.4-delim-match-lib-test: lib1.4-delim-match-lib.so 1.4-delim-match-lib-test.o
+	$(compile_and_link_so)
+	./$@
+
 clean:
 	rm -f *.o *.d *.so callgrind.* $(execs)
 
