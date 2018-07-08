@@ -33,11 +33,7 @@ static void test_list()
   assert(list_next_node(&l, x) == y);
   assert(list_next_node(&l, y) == NULL);
   assert(list_search_data(&l, &a, sizeof a, &p) == x && p == NULL);
-
-  //assert(list_search_data(&l, &b, sizeof b, &p) == y && p == x);
-  assert(list_search_data(&l, &b, sizeof b, &p) == y);
-  assert(p == x);
-
+  assert(list_search_data(&l, &b, sizeof b, &p) == y && p == x);
   assert(list_search_data(&l, &c, sizeof c, &p) == NULL && p == NULL);
 
   // l -> x(a) -> y(b) -> z(c) -> NULL
