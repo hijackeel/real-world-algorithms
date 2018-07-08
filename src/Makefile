@@ -56,6 +56,10 @@ lib1.4-delim-match-lib.so: lib1.1-array-stack-char-lib.so 1.4-delim-match-lib.o
 1.4-delim-match: lib1.4-delim-match-lib.so 1.4-delim-match.o
 	$(compile_and_link_so)
 
+2.1-linked-list-lib-test: lib2.1-linked-list-lib.so 2.1-linked-list-lib-test.o
+	$(compile_and_link_so)
+	./$@
+
 clean:
 	rm -f *.o *.d *.so callgrind.* $(execs)
 

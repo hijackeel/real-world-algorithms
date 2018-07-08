@@ -12,3 +12,6 @@ A comment in one of the files details the Stock Span Problem. [libcurl](https://
 #### 1.3 Write an [RPN](https://en.wikipedia.org/wiki/Reverse_Polish_notation) calculator.
 
 #### 1.4 Write a program to determine whether a sequence of open/close delimiters such as `(){[](){}}` is properly matched.
+
+#### 2.1 Implement a singly linked list.
+Each node in the list contains a void pointer to data, instead of the data itself, so that the list is generic.
