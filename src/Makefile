@@ -17,9 +17,9 @@ all: $(execs)
 lib%.so: %.o
 	$(CC) $(CFLAGS) $^ -o $@ -shared
 
-1.1-array-stack-%-lib-test:\
-lib1.1-array-stack-%-lib.so\
-1.1-array-stack-%-lib-test.o
+1.1-array-stack%lib-test:\
+lib1.1-array-stack%lib.so\
+1.1-array-stack%lib-test.o
 	$(compile_and_link_so)
 	./$@
 
