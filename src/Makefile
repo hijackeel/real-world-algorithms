@@ -17,9 +17,7 @@ all: $(execs)
 lib%.so: %.o
 	$(CC) $(CFLAGS) $^ -o $@ -shared
 
-1.1-array-stack%lib-test:\
-lib1.1-array-stack%lib.so\
-1.1-array-stack%lib-test.o
+1.1-array-stack%lib-test: lib1.1-array-stack%lib.so 1.1-array-stack%lib-test.o
 	$(compile_and_link_so)
 	./$@
 
@@ -62,6 +60,18 @@ lib1.4-delim-match-lib.so: lib1.1-array-stack-char-lib.so 1.4-delim-match-lib.o
 
 2.2-array-queue-lib-test: lib2.2-array-queue-lib.so 2.2-array-queue-lib-test.o
 	$(compile_and_link_so)
+	./$@
+
+lib2.3-dfs-bfs-lib.so: lib2.1-linked-list-lib.so 2.3-dfs-bfs-lib.o
+	$(CC) $(CFLAGS) 2.3-dfs-bfs-lib.o -o $@ -shared\
+    -l$(patsubst lib%.so, %, $<) -L. -Wl,-rpath,'$$ORIGIN'
+
+2.3-dfs-bfs-lib-test:\
+lib2.3-dfs-bfs-lib.so\
+lib2.1-linked-list-lib.so\
+2.3-dfs-bfs-lib-test.o
+	$(CC) $(CFLAGS) $@.o -o $@ -l2.3-dfs-bfs-lib -l2.1-linked-list-lib\
+    -L. -Wl,-rpath,'$$ORIGIN'
 	./$@
 
 clean:

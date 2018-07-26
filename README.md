@@ -17,3 +17,5 @@ A comment in one of the files details the Stock Span Problem. [libcurl](https://
 Each node in the list contains a void pointer to data, instead of the data itself, so that the list is generic.
 
 #### 2.2 Implement an array-based queue.
+
+#### 2.3 Implement depth-first search (either recursively or not) and breadth-first search using an adjacency matrix representation.
